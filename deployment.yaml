@@ -13,7 +13,7 @@ labels:
 app: express-api
 spec:
 containers:- name: express-api
-image: lvarshitha7/k8s-express-api:v1
+image: lvarshitha7/k8s-cluster-autoscaler:v1
 ports:- containerPort: 3000
 resources:
 requests:
