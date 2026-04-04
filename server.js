@@ -25,4 +25,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Shows which pod handled the request
+app.get('/api/info', (req, res) => {
+  res.json({
+    podName: process.env.HOSTNAME,
+    podIP: os.networkInterfaces(),
+    node: os.hostname(),
+    message: 'Request handled by this pod'
+  });
+});
+
 app.listen(PORT, () => console.log(`Running on port ${PORT}`));
