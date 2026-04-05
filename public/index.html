@@ -1,1119 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Amazon.in – Great Indian Festival</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Amazon Ember',Arial,sans-serif;background:#eaeded;min-width:980px;}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>K8sKart – High Traffic Sale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:#08080e; --surface:#111118; --card:#16161f;
+      --accent:#ff5722; --accent2:#ff8a50; --gold:#ffc107;
+      --neon:#00e5ff; --text:#f0f0f5; --muted:#777799;
+      --border:rgba(255,255,255,0.07); --glow:0 0 40px rgba(255,87,34,0.35);
+    }
+    html.light-mode {
+      --bg:#f5f5f5; --surface:#ffffff; --card:#f9f9f9;
+      --accent:#ff5722; --accent2:#ff8a50; --gold:#ffc107;
+      --neon:#00a8cc; --text:#1a1a1a; --muted:#666666;
+      --border:rgba(0,0,0,0.1); --glow:0 0 40px rgba(255,87,34,0.2);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;cursor:none;}
+    a,button,input{cursor:none!important;}
 
-/* ═══════════════════════════════════════════════
-   TOP NAV
-═══════════════════════════════════════════════ */
-#nav-top{
-  background:#131921;
-  display:flex;
-  align-items:center;
-  gap:0;
-  height:60px;
-  padding:0 10px;
-  position:sticky;top:0;z-index:200;
-}
+    /* ── CURSOR ── */
+    #c-dot{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .12s,height .12s,opacity .2s;}
+    #c-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:2px solid rgba(255,87,34,.65);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.25,.46,.45,.94),height .3s cubic-bezier(.25,.46,.45,.94),border-color .2s,background .2s,opacity .2s;}
+    #c-trail, #c-lbl {
+  display: none !important;
+}   
+    body.c-hover #c-ring{width:56px;height:56px;border-color:var(--accent2);background:rgba(255,87,34,.07);}
+    body.c-hover #c-dot{width:5px;height:5px;}
+    body.c-click #c-ring{width:24px;height:24px;border-color:var(--accent);transition:width .08s,height .08s;}
+    body.c-click #c-dot{width:14px;height:14px;transition:width .08s,height .08s;}
 
-/* Logo */
-.nav-logo{
-  display:flex;flex-direction:column;align-items:flex-start;
-  margin-right:8px;padding:8px 6px;border:1px solid transparent;border-radius:2px;cursor:pointer;
-}
-.nav-logo:hover{border-color:#fff;}
-.logo-text{
-  color:#fff;font-size:21px;font-weight:700;letter-spacing:-0.5px;line-height:1;
-  font-family:Arial,sans-serif;
-}
-.logo-text .dot{color:#FF9900;}
-.logo-smile{
-  width:38px;height:9px;
-  border-bottom:3px solid #FF9900;
-  border-radius:0 0 50% 50%;
-  margin-left:2px;
-}
-.logo-in{color:#FF9900;font-size:11px;font-weight:700;align-self:flex-end;margin-top:-4px;}
+    /* ── NOISE ── */
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4;}
 
-/* Deliver */
-.nav-deliver{
-  color:#ccc;font-size:11px;line-height:1.4;
-  padding:8px 6px;border:1px solid transparent;border-radius:2px;cursor:pointer;
-  margin-right:4px;white-space:nowrap;
-}
-.nav-deliver:hover{border-color:#fff;color:#fff;}
-.nav-deliver .loc-icon{font-size:13px;}
-.nav-deliver .bold{color:#fff;font-size:13px;font-weight:700;}
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:200;background:rgba(8,8,14,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 44px;height:62px;}
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:3px;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .nav-logo sup{font-family:'Barlow',sans-serif;font-size:.5rem;font-weight:700;-webkit-text-fill-color:var(--accent);color:var(--accent);vertical-align:super;letter-spacing:1px;}
+    .nav-links{display:flex;gap:28px;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:.88rem;transition:color .2s;}
+    .nav-links a:hover{color:var(--text);}
+    .nav-right{display:flex;gap:10px;align-items:center;}
+    .nav-search{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-family:'Barlow',sans-serif;font-size:.88rem;outline:none;width:200px;transition:border-color .2s;}
+    .nav-search:focus{border-color:var(--accent);}
+    .nav-search::placeholder{color:var(--muted);}
+    .btn-cart{position:relative;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-family:'Barlow',sans-serif;font-weight:700;font-size:.88rem;display:flex;align-items:center;gap:7px;transition:transform .15s,box-shadow .15s;}
+    .btn-cart:hover{transform:translateY(-1px);box-shadow:var(--glow);}
+    .cart-badge{background:#fff;color:var(--accent);border-radius:999px;font-size:.68rem;font-weight:900;padding:1px 6px;min-width:18px;text-align:center;transition:transform .2s;}
+    .btn-theme{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:8px;width:40px;height:40px;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s,box-shadow .15s;cursor:pointer;}
+    .btn-theme:hover{background:var(--accent);color:#fff;transform:scale(1.05);}
 
-/* Search */
-.nav-search{
-  flex:1;display:flex;height:40px;border-radius:4px;overflow:hidden;
-  margin:0 8px;
-}
-.search-cat{
-  background:#f3f3f3;border:none;border-right:1px solid #cdcdcd;
-  font-size:12px;padding:0 8px;cursor:pointer;width:60px;
-  border-radius:4px 0 0 4px;
-}
-.search-cat:hover{background:#e9e9e9;}
-.search-input{
-  flex:1;border:none;font-size:15px;padding:0 10px;outline:none;
-  background:#fff;
-}
-.search-btn{
-  background:#febd69;border:none;width:45px;cursor:pointer;
-  border-radius:0 4px 4px 0;display:grid;place-items:center;
-  transition:background .15s;
-}
-.search-btn:hover{background:#f3a847;}
-.search-btn svg{width:20px;height:20px;fill:#111;}
+    /* ── CART DRAWER ── */
+    .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .cart-overlay.open{opacity:1;pointer-events:all;}
+    .cart-drawer{position:fixed;top:0;right:0;bottom:0;width:400px;max-width:95vw;background:var(--surface);border-left:1px solid var(--border);z-index:501;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+    .cart-drawer.open{transform:translateX(0);}
+    .cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);}
+    .cart-header h2{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:1px;}
+    .cart-close{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:8px;width:36px;height:36px;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .cart-close:hover{background:var(--accent);}
+    .cart-items{flex:1;overflow-y:auto;padding:16px 24px;display:flex;flex-direction:column;gap:14px;}
+    .cart-items::-webkit-scrollbar{width:4px;}
+    .cart-items::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+    .cart-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted);padding:40px;text-align:center;}
+    .cart-empty .ei{font-size:3.5rem;opacity:.35;}
+    .cart-empty p{font-size:.88rem;}
+    .cart-item{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;}
+    .ci-icon{font-size:2.2rem;min-width:48px;text-align:center;}
+    .ci-info{flex:1;}
+    .ci-brand{font-size:.7rem;color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+    .ci-name{font-weight:700;font-size:.88rem;line-height:1.3;margin-bottom:4px;}
+    .ci-price{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;color:var(--accent);}
+    .ci-qty{display:flex;align-items:center;gap:6px;margin-top:5px;}
+    .qty-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;width:26px;height:26px;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .18s;}
+    .qty-btn:hover{background:var(--accent);border-color:var(--accent);}
+    .qty-n{font-weight:700;font-size:.88rem;min-width:20px;text-align:center;}
+    .ci-remove{background:none;border:none;color:var(--muted);font-size:1rem;padding:4px 8px;border-radius:6px;transition:color .2s,background .2s;align-self:flex-start;}
+    .ci-remove:hover{color:#ff5252;background:rgba(255,82,82,.1);}
+    .cart-footer{padding:20px 24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:14px;}
+    .cart-total{display:flex;justify-content:space-between;align-items:baseline;}
+    .cart-total span:first-child{font-size:.88rem;color:var(--muted);font-weight:600;}
+    .cart-total-val{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;}
+    .btn-checkout{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;padding:14px;font-family:'Barlow',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.5px;box-shadow:0 4px 24px rgba(255,87,34,.35);transition:transform .15s,box-shadow .15s;}
+    .btn-checkout:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,87,34,.5);}
 
-/* Flag */
-.nav-flag{
-  padding:8px 6px;border:1px solid transparent;border-radius:2px;cursor:pointer;
-  margin-right:4px;color:#fff;font-size:18px;
-}
-.nav-flag:hover{border-color:#fff;}
+    /* ── RIBBON ── */
+    .ribbon{background:linear-gradient(90deg,var(--accent),#e64a19,var(--accent));background-size:200%;animation:rbg 4s linear infinite;padding:9px 0;overflow:hidden;}
+    @keyframes rbg{0%{background-position:0%}100%{background-position:200%}}
+    .ribbon-inner{display:flex;gap:56px;white-space:nowrap;animation:scroll 26s linear infinite;}
+    .ribbon-item{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;}
+    .ribbon-item::before{content:'◆ ';opacity:.5;}
+    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* Account */
-.nav-account{
-  color:#ccc;font-size:11px;line-height:1.4;
-  padding:8px 6px;border:1px solid transparent;border-radius:2px;cursor:pointer;
-  white-space:nowrap;
-}
-.nav-account:hover{border-color:#fff;color:#fff;}
-.nav-account .bold{color:#fff;font-size:13px;font-weight:700;}
+    /* ── HERO ── */
+    .hero{position:relative;overflow:hidden;min-height:90vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+    .hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 70% 55% at 18% 28%,rgba(255,87,34,.16) 0%,transparent 55%),radial-gradient(ellipse 55% 45% at 82% 72%,rgba(255,140,80,.1) 0%,transparent 50%),radial-gradient(ellipse 45% 60% at 58% 8%,rgba(255,193,7,.08) 0%,transparent 48%);animation:hbg 9s ease-in-out infinite alternate;}
+    @keyframes hbg{0%{opacity:1;transform:scale(1)}100%{opacity:.75;transform:scale(1.04) translateX(8px)}}
+    .hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(255,87,34,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,87,34,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,black 30%,transparent 80%);}
+    .hero-inner{position:relative;z-index:2;padding:60px 20px 40px;max-width:860px;}
 
-/* Returns */
-.nav-returns{
-  color:#ccc;font-size:11px;line-height:1.4;
-  padding:8px 6px;border:1px solid transparent;border-radius:2px;cursor:pointer;
-  white-space:nowrap;margin:0 4px;
-}
-.nav-returns:hover{border-color:#fff;color:#fff;}
-.nav-returns .bold{color:#fff;font-size:13px;font-weight:700;}
+    .live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,87,34,.12);border:1px solid rgba(255,87,34,.3);border-radius:999px;padding:5px 16px;font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;animation:fi .5s ease both;}
+    .live-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pulse 1.4s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
 
-/* Cart */
-.nav-cart{
-  display:flex;align-items:center;gap:4px;
-  padding:8px 6px;border:1px solid transparent;border-radius:2px;cursor:pointer;
-  position:relative;
-}
-.nav-cart:hover{border-color:#fff;}
-.cart-count{
-  position:absolute;top:4px;left:22px;
-  background:#FF9900;color:#111;border-radius:50%;
-  width:18px;height:18px;font-size:12px;font-weight:700;
-  display:grid;place-items:center;
-}
-.cart-icon{font-size:28px;color:#fff;}
-.cart-label{color:#fff;font-size:13px;font-weight:700;margin-top:10px;}
+    .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.5rem,14vw,12rem);line-height:.88;letter-spacing:-1px;margin-bottom:8px;}
+    .hero-title .t1{display:block;background:linear-gradient(90deg,#fff 0%,#ffe0cc 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fi .6s .05s ease both;}
+    .hero-title .t2{display:block;background:linear-gradient(90deg,var(--accent) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 28px rgba(255,87,34,.45));animation:fi .6s .12s ease both;}
+    .hero-title .t3{display:block;font-size:clamp(2.8rem,8vw,7rem);letter-spacing:8px;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.15);animation:fi .6s .18s ease both;}
+    
+    html.light-mode .hero-title .t1{background:linear-gradient(90deg,#ff5722 0%,#ff8a50 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    html.light-mode .hero-title .t3{-webkit-text-stroke:1.5px rgba(255,87,34,.3);}
 
-/* ═══════════════════════════════════════════════
-   SUB NAV
-═══════════════════════════════════════════════ */
-#nav-sub{
-  background:#232f3e;
-  display:flex;
-  align-items:center;
-  height:38px;
-  padding:0 8px;
-  gap:0;
-}
-.subnav-link{
-  color:#fff;font-size:13px;padding:8px 10px;
-  cursor:pointer;white-space:nowrap;border:1px solid transparent;border-radius:2px;
-  text-decoration:none;display:block;line-height:1.4;
-}
-.subnav-link:hover{border-color:#fff;}
-.subnav-link.has-arrow::after{content:' ▾';}
-.subnav-spacer{flex:1;}
-.subnav-festival{
-  background:#232f3e;color:#fff;font-size:13px;
-  padding:4px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;
-  border-left:1px solid #3a4553;height:100%;
-  white-space:nowrap;
-}
-.subnav-festival:hover{background:#37475a;}
-.festival-fire{font-size:16px;}
-.festival-arrow{font-size:14px;color:#FF9900;}
+    .hero-tagline{font-size:clamp(.95rem,2vw,1.15rem);color:var(--muted);margin:24px auto 12px;max-width:480px;line-height:1.65;animation:fi .7s .24s ease both;}
+    .hero-tagline strong{color:var(--text);}
+    .k8s-line{display:inline-flex;align-items:center;gap:8px;color:var(--accent2);font-size:.82rem;font-weight:600;letter-spacing:.5px;margin-bottom:36px;border-bottom:1px dashed rgba(255,87,34,.3);padding-bottom:6px;animation:fi .7s .28s ease both;}
+    .hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fi .7s .32s ease both;}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;padding:14px 36px;font-family:'Barlow',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.4px;box-shadow:0 4px 28px rgba(255,87,34,.4);transition:transform .2s,box-shadow .2s;}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(255,87,34,.55);}
+    .btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,.15);color:var(--text);border-radius:10px;padding:14px 36px;font-family:'Barlow',sans-serif;font-size:1rem;font-weight:600;transition:border-color .2s,background .2s;}
+    .btn-outline:hover{border-color:var(--accent);background:rgba(255,87,34,.07);}
 
-/* ═══════════════════════════════════════════════
-   HERO BANNER
-═══════════════════════════════════════════════ */
-.hero-wrapper{
-  position:relative;width:100%;overflow:hidden;user-select:none;
-}
-.hero-slider{
-  display:flex;transition:transform .5s ease;
-}
-.hero-slide{
-  min-width:100%;
-}
+    .scaling-badge{display:inline-flex;align-items:center;gap:7px;margin-top:28px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:600;color:rgba(0,229,255,.8);letter-spacing:.5px;animation:fi .8s .4s ease both;}
+    .scaling-dot{width:8px;height:8px;background:#00e5ff;border-radius:50%;box-shadow:0 0 8px #00e5ff;animation:pulse 1.8s ease-in-out infinite;}
 
-/* Slide 1 – Great Indian Festival */
-.slide-gif{
-  background:linear-gradient(180deg,#f0a500 0%,#e8920a 30%,#d4780a 70%,#c06b08 100%);
-  position:relative;width:100%;height:360px;overflow:hidden;
-  display:flex;align-items:center;
-}
+    .countdown{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:52px;animation:fi 1s .45s ease both;}
+    .cd-lbl{color:var(--muted);font-size:.76rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-right:6px;}
+    .cd-blk{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:11px 14px;min-width:60px;text-align:center;}
+    .cd-n{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900;color:var(--accent);line-height:1;}
+    .cd-u{font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+    .cd-sep{font-size:1.7rem;color:var(--accent);font-weight:700;padding-bottom:8px;}
 
-/* Decorative diya dots border top */
-.gif-border-top{
-  position:absolute;top:0;left:0;right:0;height:12px;
-  background:repeating-linear-gradient(90deg,
-    #c06b08 0px,#c06b08 6px,
-    #f5c842 6px,#f5c842 12px
-  );
-}
-.gif-border-bottom{
-  position:absolute;bottom:0;left:0;right:0;height:12px;
-  background:repeating-linear-gradient(90deg,
-    #c06b08 0px,#c06b08 6px,
-    #f5c842 6px,#f5c842 12px
-  );
-}
+    .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--muted);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;animation:bob 2.2s ease-in-out infinite;}
+    .scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--accent),transparent);}
+    @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+    @keyframes fi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* Stars & sparkles */
-.sparkle{position:absolute;color:#fff;font-size:14px;opacity:0.7;animation:twinkle 2s ease-in-out infinite;}
-.sparkle:nth-child(1){top:18%;left:8%;animation-delay:0s;}
-.sparkle:nth-child(2){top:40%;left:5%;animation-delay:.4s;}
-.sparkle:nth-child(3){top:70%;left:12%;animation-delay:.8s;}
-.sparkle:nth-child(4){top:15%;right:8%;animation-delay:.2s;}
-.sparkle:nth-child(5){top:55%;right:6%;animation-delay:.6s;}
-.sparkle:nth-child(6){top:75%;right:14%;animation-delay:1s;}
-@keyframes twinkle{0%,100%{opacity:.5;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
+    /* ── SECTIONS ── */
+    .section{padding:72px 44px;max-width:1280px;margin:0 auto;}
+    .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;}
+    .sec-title{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:1px;}
+    .sec-title span{color:var(--accent);}
+    .view-all{color:var(--neon);font-weight:600;font-size:.85rem;text-decoration:none;transition:opacity .2s;}
+    .view-all:hover{opacity:.65;}
 
-/* Elephant left decorative */
-.elephants-left{
-  position:absolute;left:0;top:0;bottom:0;width:200px;
-  display:flex;align-items:center;justify-content:center;
-}
-.elephant-svg{font-size:80px;transform:scaleX(-1);animation:sway 3s ease-in-out infinite;}
-@keyframes sway{0%,100%{transform:scaleX(-1) rotate(-2deg);}50%{transform:scaleX(-1) rotate(2deg);}}
+    .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
+    .cat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;text-align:center;position:relative;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s;}
+    .cat-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--cc,var(--accent)) 0%,transparent 75%);opacity:0;transition:opacity .2s;border-radius:12px;}
+    .cat-card:hover::after{opacity:.1;}
+    .cat-card:hover{transform:translateY(-4px);border-color:var(--cc,var(--accent));box-shadow:0 8px 28px rgba(0,0,0,.35);}
+    .cat-icon{font-size:2rem;}
+    .cat-name{font-weight:700;font-size:.85rem;}
+    .cat-off{font-size:.72rem;color:var(--cc,var(--accent));font-weight:700;}
 
-/* Lamp / diya decorations */
-.lamp-left{
-  position:absolute;left:60px;top:20px;font-size:28px;
-  animation:lampSwing 2.5s ease-in-out infinite;transform-origin:top center;
-}
-.lamp-left2{
-  position:absolute;left:130px;top:20px;font-size:24px;
-  animation:lampSwing 3s ease-in-out infinite .5s;transform-origin:top center;
-}
-@keyframes lampSwing{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(5deg);}}
+    .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;}
+    .product-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;position:relative;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;}
+    .product-card:hover{transform:translateY(-5px);box-shadow:0 16px 44px rgba(0,0,0,.4);}
+    .prod-badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--accent);color:#fff;font-size:.65rem;font-weight:800;padding:3px 9px;border-radius:5px;letter-spacing:.5px;text-transform:uppercase;}
+    .prod-badge.deal{background:linear-gradient(90deg,var(--accent),var(--gold));}
+    .prod-badge.new{background:var(--neon);color:#000;}
+    .prod-img{background:linear-gradient(135deg,#1c1c2c,#222235);height:190px;display:flex;align-items:center;justify-content:center;font-size:4.2rem;}
+    .prod-info{padding:14px;flex:1;display:flex;flex-direction:column;gap:5px;}
+    .prod-brand{font-size:.68rem;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+    .prod-name{font-weight:700;font-size:.9rem;line-height:1.3;}
+    .prod-stars{color:var(--gold);font-size:.78rem;}
+    .prod-reviews{color:var(--muted);font-size:.75rem;}
+    .prod-prices{display:flex;align-items:baseline;gap:7px;margin-top:3px;}
+    .prod-price{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;}
+    .prod-orig{font-size:.8rem;color:var(--muted);text-decoration:line-through;}
+    .prod-disc{font-size:.75rem;font-weight:700;color:#66bb6a;}
+    .prod-btn{margin:10px 14px 14px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px;font-family:'Barlow',sans-serif;font-weight:700;font-size:.85rem;transition:background .2s,border-color .2s;}
+    .prod-btn:hover{background:var(--accent);border-color:var(--accent);}
 
-/* Right side decorations */
-.elephants-right{
-  position:absolute;right:0;top:0;bottom:0;width:200px;
-  display:flex;align-items:center;justify-content:center;
-}
-.elephant-right{font-size:80px;animation:swayR 3s ease-in-out infinite .5s;}
-@keyframes swayR{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
-.lamp-right{
-  position:absolute;right:60px;top:20px;font-size:28px;
-  animation:lampSwing 2.8s ease-in-out infinite .3s;transform-origin:top center;
-}
-.lamp-right2{
-  position:absolute;right:130px;top:20px;font-size:24px;
-  animation:lampSwing 2.4s ease-in-out infinite .7s;transform-origin:top center;
-}
+    .banners{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:0 44px 56px;max-width:1280px;margin:0 auto;}
+    .banner{border-radius:16px;overflow:hidden;position:relative;min-height:210px;display:flex;align-items:flex-end;cursor:pointer;transition:transform .2s;}
+    .banner:hover{transform:scale(1.01);}
+    .b1{background:linear-gradient(135deg,#0c0c24,#1a0a2c,#380e60);}
+    .b2{background:linear-gradient(135deg,#1a0900,#3d1000,#7a2200);}
+    .b-deco{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;padding:20px;font-size:6.5rem;opacity:.22;}
+    .b-text{position:relative;z-index:2;padding:26px;display:flex;flex-direction:column;gap:7px;}
+    .b-eye{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.55;}
+    .b-title{font-family:'Bebas Neue',sans-serif;font-size:2.1rem;line-height:1;}
+    .b-sub{font-size:.84rem;color:rgba(255,255,255,.55);}
+    .b-cta{display:inline-block;margin-top:8px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:8px;padding:7px 18px;font-weight:700;font-size:.82rem;transition:background .2s;}
+    .b-cta:hover{background:rgba(255,255,255,.22);}
 
-/* Amazon boxes scattered */
-.amzbox{position:absolute;font-size:22px;opacity:.8;}
-.amzbox.b1{left:50px;bottom:30px;}
-.amzbox.b2{left:150px;bottom:20px;}
-.amzbox.b3{right:50px;bottom:30px;}
-.amzbox.b4{right:150px;bottom:25px;}
+    .features{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);padding:28px 44px;display:flex;justify-content:center;gap:56px;flex-wrap:wrap;}
+    .feat{display:flex;align-items:center;gap:12px;}
+    .feat-ico{font-size:1.7rem;}
+    .feat strong{display:block;font-size:.9rem;font-weight:700;}
+    .feat span{font-size:.78rem;color:var(--muted);}
 
-/* Main center circle */
-.hero-center{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  flex-direction:column;position:relative;z-index:2;
-  margin:0 180px;
-}
-.festival-circle{
-  width:200px;height:200px;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#8B1A6B,#6B0D50 60%,#4a0838);
-  border:6px solid #f5c842;
-  box-shadow:0 0 0 4px #d4780a,0 8px 30px rgba(0,0,0,0.3);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  text-align:center;padding:20px;position:relative;
-  animation:circlePulse 3s ease-in-out infinite;
-}
-@keyframes circlePulse{0%,100%{box-shadow:0 0 0 4px #d4780a,0 8px 30px rgba(0,0,0,.3);}
-50%{box-shadow:0 0 0 6px #f5c842,0 12px 40px rgba(0,0,0,.4);}}
+    footer{background:var(--surface);border-top:1px solid var(--border);padding:48px 44px 26px;}
+    .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+    .f-logo{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;}
+    .f-desc{color:var(--muted);font-size:.84rem;line-height:1.7;max-width:260px;}
+    .footer-col h4{font-weight:700;font-size:.86rem;letter-spacing:.5px;margin-bottom:14px;}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+    .footer-col ul li a{color:var(--muted);text-decoration:none;font-size:.82rem;transition:color .2s;}
+    .footer-col ul li a:hover{color:var(--text);}
+    .footer-bot{max-width:1280px;margin:20px auto 0;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.78rem;flex-wrap:wrap;gap:8px;}
 
-/* Decorative arch on circle top */
-.circle-arch{
-  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  width:60px;height:30px;
-  border:4px solid #f5c842;border-bottom:none;border-radius:30px 30px 0 0;
-}
-.circle-dots{
-  position:absolute;top:-8px;left:50%;transform:translateX(-50%);
-  display:flex;gap:8px;
-}
-.cdot{width:8px;height:8px;border-radius:50%;background:#f5c842;}
-
-.festival-great{color:#fff;font-size:14px;font-weight:700;letter-spacing:1px;line-height:1.3;font-family:Arial,sans-serif;}
-.festival-indian{color:#FFD700;font-size:20px;font-weight:900;letter-spacing:0.5px;line-height:1.1;font-family:Arial,sans-serif;}
-.festival-festival{color:#fff;font-size:14px;font-weight:700;letter-spacing:1px;line-height:1.3;font-family:Arial,sans-serif;}
-.festival-starts{
-  margin-top:12px;
-  background:#8B1A2E;
-  color:#fff;
-  font-size:15px;font-weight:900;
-  padding:8px 24px;
-  border-radius:4px;
-  letter-spacing:.5px;
-  white-space:nowrap;
-  font-family:Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.2);
-}
-
-/* Right content panel */
-.hero-right-panel{
-  position:absolute;right:210px;top:50%;transform:translateY(-50%);
-  text-align:left;z-index:2;
-}
-.sale-starts-text{color:#5a0d2b;font-size:16px;font-weight:600;margin-bottom:8px;}
-.prime-badge{
-  background:#007185;color:#fff;font-size:13px;font-weight:700;
-  padding:5px 14px;border-radius:3px;display:inline-block;margin-bottom:10px;cursor:pointer;
-}
-.prime-badge:hover{background:#005f6e;}
-.sale-date{color:#111;font-size:20px;font-weight:700;margin-bottom:14px;}
-.hdfc-strip{
-  background:#fff;border-radius:6px;padding:8px 12px;
-  display:flex;align-items:center;gap:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.12);max-width:240px;
-}
-.hdfc-logo{
-  background:#004c97;color:#fff;font-size:9px;font-weight:900;
-  padding:4px 6px;border-radius:3px;letter-spacing:.5px;white-space:nowrap;
-}
-.hdfc-logo span{color:#febd69;}
-.hdfc-text{font-size:11px;color:#333;line-height:1.4;}
-.hdfc-text strong{font-size:13px;color:#111;}
-.tnc{color:#555;font-size:10px;margin-top:6px;display:block;}
-
-/* Slider arrows */
-.slider-arrow{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(255,255,255,.9);border:none;
-  width:36px;height:70px;cursor:pointer;z-index:10;
-  display:grid;place-items:center;font-size:22px;color:#111;
-  transition:background .2s;
-}
-.slider-arrow:hover{background:#fff;}
-.slider-arrow.left{left:0;border-radius:0 4px 4px 0;}
-.slider-arrow.right{right:0;border-radius:4px 0 0 4px;}
-
-/* Slide 2 – Electronics */
-.slide-electronics{
-  background:linear-gradient(135deg,#0e1b2d 0%,#1a3a5c 50%,#0e1b2d 100%);
-  width:100%;height:360px;display:flex;align-items:center;justify-content:center;
-  gap:60px;
-}
-.elec-title{color:#fff;font-size:40px;font-weight:900;text-align:center;}
-.elec-title span{color:#FF9900;display:block;}
-.elec-icons{display:flex;gap:20px;font-size:60px;}
-
-/* Slide 3 – Fashion */
-.slide-fashion{
-  background:linear-gradient(135deg,#ff4081,#f50057 50%,#c51162);
-  width:100%;height:360px;display:flex;align-items:center;justify-content:center;
-  gap:60px;
-}
-.fash-title{color:#fff;font-size:40px;font-weight:900;text-align:center;}
-.fash-title span{color:#FFD740;display:block;}
-
-/* Slide indicators */
-.slide-dots{
-  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-  display:flex;gap:6px;z-index:10;
-}
-.sdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:background .2s;}
-.sdot.active{background:#fff;}
-
-/* ═══════════════════════════════════════════════
-   DEAL CARDS ROW (below hero)
-═══════════════════════════════════════════════ */
-.deal-strip{
-  background:#eaeded;padding:12px 14px 0;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
-  max-width:1500px;margin:0 auto;
-}
-.deal-card{
-  background:#fff;border-radius:4px;padding:16px;cursor:pointer;
-  transition:box-shadow .2s;position:relative;overflow:hidden;
-}
-.deal-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);}
-.deal-card h4{font-size:16px;font-weight:700;margin-bottom:10px;color:#111;}
-.deal-card .see-more{
-  color:#007185;font-size:13px;cursor:pointer;margin-top:12px;display:block;
-}
-.deal-card .see-more:hover{color:#c45500;text-decoration:underline;}
-.deal-items{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.deal-item{text-align:center;font-size:11px;color:#555;}
-.deal-item .di-emoji{font-size:36px;display:block;margin-bottom:4px;}
-.deal-item .di-label{display:block;font-size:11px;color:#555;}
-
-/* cashback card */
-.cashback-card{background:#fff;padding:16px;border-radius:4px;cursor:pointer;}
-.cashback-card h4{font-size:16px;font-weight:700;margin-bottom:4px;color:#111;}
-.cashback-card p{font-size:13px;color:#555;margin-bottom:12px;}
-.cashback-card .big-num{font-size:44px;font-weight:900;color:#c45500;line-height:1;}
-.cashback-card .big-unit{font-size:16px;font-weight:700;color:#c45500;}
-.cashback-card .offer-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
-.cashback-card .offer-tag{background:#cc0c39;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:3px;}
-
-/* ═══════════════════════════════════════════════
-   MAIN CONTENT GRID
-═══════════════════════════════════════════════ */
-.content-wrap{max-width:1500px;margin:12px auto;padding:0 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-
-.content-card{background:#fff;border-radius:4px;padding:18px;cursor:pointer;transition:box-shadow .2s;}
-.content-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);}
-.content-card h3{font-size:17px;font-weight:700;color:#111;margin-bottom:12px;}
-.content-card .see-more{color:#007185;font-size:13px;cursor:pointer;margin-top:14px;display:block;}
-.content-card .see-more:hover{text-decoration:underline;color:#c45500;}
-
-.product-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.prod-mini{text-align:center;}
-.prod-mini .pm-img{font-size:50px;display:block;margin-bottom:4px;}
-.prod-mini .pm-price{font-size:12px;color:#555;}
-.prod-mini .pm-disc{color:#cc0c39;font-size:11px;font-weight:700;}
-
-/* Prime card */
-.prime-card{
-  background:linear-gradient(180deg,#003087 0%,#001f5e 100%);
-  border-radius:4px;padding:18px;cursor:pointer;display:flex;flex-direction:column;
-  transition:box-shadow .2s;
-}
-.prime-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.3);}
-.prime-logo-big{color:#fff;font-size:28px;font-weight:900;margin-bottom:4px;}
-.prime-logo-big em{color:#00A8E0;font-style:normal;}
-.prime-card p{color:rgba(255,255,255,.8);font-size:13px;margin-bottom:16px;}
-.prime-card .prime-cta{
-  background:#FF9900;color:#111;border:none;border-radius:4px;
-  padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;
-  align-self:flex-start;transition:background .15s;
-}
-.prime-card .prime-cta:hover{background:#e08800;}
-.prime-perks{margin-top:14px;}
-.prime-perks li{color:rgba(255,255,255,.8);font-size:12px;list-style:none;padding:3px 0;}
-.prime-perks li::before{content:'✓ ';color:#00A8E0;font-weight:700;}
-
-/* ═══════════════════════════════════════════════
-   TODAY'S DEALS
-═══════════════════════════════════════════════ */
-.today-deals{max-width:1500px;margin:12px auto;padding:0 14px;}
-.section-header{
-  background:#fff;border-radius:4px 4px 0 0;padding:14px 18px;
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid #ddd;
-}
-.section-header h2{font-size:22px;font-weight:700;color:#111;}
-.section-header a{color:#007185;font-size:14px;cursor:pointer;text-decoration:none;}
-.section-header a:hover{color:#c45500;text-decoration:underline;}
-
-.deals-grid{
-  background:#fff;padding:14px 18px;border-radius:0 0 4px 4px;
-  display:grid;grid-template-columns:repeat(5,1fr);gap:14px;
-}
-.deal-product{cursor:pointer;padding:10px;border-radius:4px;transition:box-shadow .2s;border:1px solid transparent;}
-.deal-product:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-color:#FF9900;}
-.dp-img{font-size:72px;text-align:center;display:block;margin-bottom:8px;}
-.dp-badge{background:#cc0c39;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px;display:inline-block;margin-bottom:6px;}
-.dp-name{font-size:13px;color:#111;font-weight:600;margin-bottom:4px;line-height:1.4;}
-.dp-price-row{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
-.dp-price{font-size:17px;font-weight:700;color:#111;}
-.dp-mrp{font-size:12px;color:#888;text-decoration:line-through;}
-.dp-save{font-size:12px;color:#cc0c39;font-weight:700;}
-.dp-rating{color:#FF9900;font-size:12px;margin-top:4px;}
-.dp-rating span{color:#555;font-size:11px;}
-.dp-btn{
-  width:100%;margin-top:8px;background:#FFD814;border:1px solid #FCD200;
-  border-radius:8px;padding:8px;font-size:13px;font-weight:600;
-  cursor:pointer;transition:background .15s;
-}
-.dp-btn:hover{background:#f5c802;}
-
-/* ═══════════════════════════════════════════════
-   BOTTOM CATEGORIES
-═══════════════════════════════════════════════ */
-.bottom-cats{max-width:1500px;margin:12px auto;padding:0 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.bot-card{background:#fff;border-radius:4px;padding:16px;cursor:pointer;transition:box-shadow .2s;}
-.bot-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);}
-.bot-card h4{font-size:16px;font-weight:700;color:#111;margin-bottom:12px;}
-.bot-card .see-more{color:#007185;font-size:13px;margin-top:12px;display:block;cursor:pointer;}
-.bot-card .see-more:hover{text-decoration:underline;color:#c45500;}
-.bot-items{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.bot-item{text-align:center;font-size:28px;}
-.bot-item p{font-size:11px;color:#555;margin-top:4px;}
-
-/* ═══════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════ */
-.back-to-top{background:#37475a;color:#fff;text-align:center;padding:14px;cursor:pointer;font-size:13px;margin-top:16px;}
-.back-to-top:hover{background:#485769;}
-footer{background:#232f3e;padding:30px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px;}
-.footer-col h4{color:#fff;font-size:14px;font-weight:700;margin-bottom:12px;}
-.footer-col ul{list-style:none;}
-.footer-col li{margin-bottom:6px;}
-.footer-col li a{color:#ddd;font-size:12px;text-decoration:none;cursor:pointer;}
-.footer-col li a:hover{text-decoration:underline;}
-.footer-bottom{background:#131921;padding:16px;text-align:center;}
-.footer-bottom .foot-logo{color:#fff;font-size:20px;font-weight:700;margin-bottom:8px;}
-.footer-bottom .foot-logo span{color:#FF9900;}
-.footer-bottom p{color:#555;font-size:12px;}
-
-/* ═══════════════════════════════════════════════
-   MODAL (Sign-in / Cart)
-═══════════════════════════════════════════════ */
-.modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;
-  align-items:center;justify-content:center;
-}
-.modal-overlay.open{display:flex;}
-.modal-box{
-  background:#fff;border-radius:8px;padding:28px;width:360px;
-  box-shadow:0 8px 32px rgba(0,0,0,.3);position:relative;
-}
-.modal-close{
-  position:absolute;top:12px;right:14px;background:none;border:none;
-  font-size:22px;cursor:pointer;color:#555;
-}
-.modal-close:hover{color:#111;}
-.modal-box h2{font-size:22px;font-weight:700;margin-bottom:18px;color:#111;}
-.modal-box label{font-size:13px;font-weight:700;color:#111;display:block;margin-bottom:4px;}
-.modal-box input[type=text],
-.modal-box input[type=password]{
-  width:100%;border:1px solid #a6a6a6;border-radius:4px;
-  padding:8px 10px;font-size:14px;margin-bottom:14px;outline:none;
-}
-.modal-box input:focus{border-color:#e77600;box-shadow:0 0 0 3px rgba(231,118,0,.3);}
-.modal-box .btn-amz{
-  width:100%;background:#FFD814;border:1px solid #FCD200;border-radius:8px;
-  padding:10px;font-size:14px;font-weight:600;cursor:pointer;
-}
-.modal-box .btn-amz:hover{background:#f5c802;}
-.modal-box .divider{text-align:center;color:#767676;font-size:12px;margin:14px 0;position:relative;}
-.modal-box .divider::before,.modal-box .divider::after{content:'';position:absolute;top:50%;width:44%;height:1px;background:#ddd;}
-.modal-box .divider::before{left:0;}.modal-box .divider::after{right:0;}
-.modal-box .new-acct{font-size:13px;color:#111;text-align:center;margin-top:14px;}
-.modal-box .new-acct a{color:#007185;cursor:pointer;text-decoration:none;}
-.modal-box .new-acct a:hover{text-decoration:underline;color:#c45500;}
-
-/* Cart modal */
-.cart-item-row{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #eee;}
-.cart-item-row .ci-img{font-size:36px;}
-.cart-item-row .ci-info{flex:1;font-size:13px;}
-.cart-item-row .ci-info strong{display:block;color:#111;margin-bottom:2px;}
-.cart-item-row .ci-price{font-weight:700;color:#111;}
-.cart-item-row .ci-remove{background:none;border:none;color:#cc0c39;font-size:11px;cursor:pointer;margin-top:4px;text-decoration:underline;}
-.cart-total-row{display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding-top:12px;}
-
-/* toast */
-.toast{
-  position:fixed;bottom:24px;right:24px;
-  background:#232f3e;color:#fff;padding:12px 20px;
-  border-radius:6px;font-size:14px;font-weight:600;
-  opacity:0;transform:translateY(20px);
-  transition:all .3s;pointer-events:none;z-index:1000;
-}
-.toast.show{opacity:1;transform:translateY(0);}
-</style>
+    @media(max-width:768px){nav{padding:0 16px;}.nav-links,.nav-search{display:none;}.section{padding:48px 16px;}.banners{grid-template-columns:1fr;padding:0 16px 36px;}.footer-grid{grid-template-columns:1fr 1fr;}.features{gap:24px;padding:22px 16px;}.cart-drawer{width:100vw;}}
+  </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════ TOP NAV ═══ -->
-<div id="nav-top">
+<!-- CURSOR -->
+<canvas id="c-trail"></canvas>
+<div id="c-dot"></div>
+<div id="c-ring"></div>
+<div id="c-lbl"></div>
 
-  <div class="nav-logo" onclick="scrollTo(0,0)">
-    <div style="display:flex;align-items:flex-end;gap:0;">
-      <span class="logo-text">amazon<span class="dot"></span></span>
-      <span class="logo-in">.in</span>
+<!-- CART OVERLAY + DRAWER -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h2>🛒 Your Cart</h2>
+    <button class="cart-close" id="cartClose">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="ei">🛍️</div>
+      <p>Your cart is empty.<br/>Add some products!</p>
     </div>
-    <div class="logo-smile"></div>
   </div>
-
-  <div class="nav-deliver">
-    <div style="display:flex;align-items:center;gap:4px;">
-      <span class="loc-icon">📍</span>
-      <span>Hello</span>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <span class="cart-total-val" id="cartTotal">₹0</span>
     </div>
-    <span class="bold">Select your address</span>
-  </div>
-
-  <div class="nav-search">
-    <select class="search-cat">
-      <option>All</option>
-      <option>Mobiles</option>
-      <option>Electronics</option>
-      <option>Fashion</option>
-      <option>Home</option>
-      <option>Books</option>
-      <option>Toys</option>
-      <option>Sports</option>
-    </select>
-    <input class="search-input" id="searchInput" type="text" placeholder="Search Amazon.in"/>
-    <button class="search-btn" onclick="doSearch()">
-      <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="#111" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
-    </button>
-  </div>
-
-  <div class="nav-flag">🇮🇳</div>
-
-  <div class="nav-account" onclick="openModal('signin-modal')">
-    <div>Hello, Sign in</div>
-    <div class="bold">Account &amp; Lists ▾</div>
-  </div>
-
-  <div class="nav-returns">
-    <div>Returns</div>
-    <div class="bold">&amp; Orders</div>
-  </div>
-
-  <div class="nav-cart" onclick="openModal('cart-modal')">
-    <span class="cart-count" id="cartCount">0</span>
-    <span class="cart-icon">🛒</span>
-    <span class="cart-label">Cart</span>
+    <button class="btn-checkout">Proceed to Checkout →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════ SUB NAV ═══ -->
-<div id="nav-sub">
-  <span class="subnav-link">☰ All</span>
-  <span class="subnav-link">Mobiles</span>
-  <span class="subnav-link">Best Sellers</span>
-  <span class="subnav-link">Customer Service</span>
-  <span class="subnav-link">Fashion</span>
-  <span class="subnav-link">Electronics</span>
-  <span class="subnav-link has-arrow">Prime</span>
-  <span class="subnav-link">Amazon Pay</span>
-  <span class="subnav-link">Today's Deals</span>
-  <span class="subnav-link">Computers</span>
-  <div class="subnav-spacer"></div>
-  <div class="subnav-festival" onclick="scrollToDeals()">
-    <span class="festival-fire">🎉</span>
-    Great Indian Festival | <strong>2 days to go</strong>
-    <span class="festival-arrow">›</span>
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <span class="ribbon-item">High Traffic Sale Live Now</span>
+    <span class="ribbon-item">Auto-Scaling Active</span>
+    <span class="ribbon-item">No-Cost EMI Available</span>
+    <span class="ribbon-item">Free Delivery on ₹499+</span>
+    <span class="ribbon-item">Flash Deals Every Hour</span>
+    <span class="ribbon-item">10-Day Easy Returns</span>
+    <span class="ribbon-item">High Traffic Sale Live Now</span>
+    <span class="ribbon-item">Auto-Scaling Active</span>
+    <span class="ribbon-item">No-Cost EMI Available</span>
+    <span class="ribbon-item">Free Delivery on ₹499+</span>
+    <span class="ribbon-item">Flash Deals Every Hour</span>
+    <span class="ribbon-item">10-Day Easy Returns</span>
   </div>
 </div>
 
-<!-- ═══════════════════════════ HERO SLIDER ═══ -->
-<div class="hero-wrapper">
-  <div class="hero-slider" id="heroSlider">
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">K8sKart<sup>®</sup></div>
+  <ul class="nav-links">
+    <li><a href="#">Electronics</a></li>
+    <li><a href="#">Fashion</a></li>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Mobiles</a></li>
+    <li><a href="#">Appliances</a></li>
+  </ul>
+  <div class="nav-right">
+    <input class="nav-search" type="text" placeholder="Search K8sKart..."/>
+    <button class="btn-theme" id="themeToggle" title="Toggle theme">🌙</button>
+    <button class="btn-cart" id="cartToggle">🛒 Cart <span class="cart-badge" id="cartCount">0</span></button>
+  </div>
+</nav>
 
-    <!-- Slide 1 – Great Indian Festival -->
-    <div class="hero-slide">
-      <div class="slide-gif">
-        <div class="gif-border-top"></div>
-        <div class="gif-border-bottom"></div>
-
-        <!-- Sparkles -->
-        <span class="sparkle">✦</span>
-        <span class="sparkle">✦</span>
-        <span class="sparkle">✦</span>
-        <span class="sparkle">✦</span>
-        <span class="sparkle">✦</span>
-        <span class="sparkle">✦</span>
-
-        <!-- Left side -->
-        <div class="elephants-left">
-          <span style="font-size:90px;animation:sway 3s ease-in-out infinite;display:inline-block;">🐘</span>
-        </div>
-        <div class="lamp-left">🪔</div>
-        <div class="lamp-left2">🏮</div>
-
-        <!-- Amazon gift boxes -->
-        <div class="amzbox b1">📦</div>
-        <div class="amzbox b2">📦</div>
-
-        <!-- Center -->
-        <div class="hero-center">
-          <div class="festival-circle">
-            <div class="circle-arch"></div>
-            <div class="circle-dots">
-              <div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
-            </div>
-            <div class="festival-great">GREAT</div>
-            <div class="festival-indian">INDIAN</div>
-            <div class="festival-festival">FESTIVAL</div>
-          </div>
-          <div class="festival-starts">STARTS 3<sup style="font-size:10px;">RD</sup> OCT</div>
-        </div>
-
-        <!-- Right panel -->
-        <div class="hero-right-panel">
-          <div class="sale-starts-text">Sale starts tonight for</div>
-          <div class="prime-badge" onclick="openModal('signin-modal')">Prime members</div>
-          <div class="sale-date">2<sup>nd</sup> Oct, 12 AM</div>
-          <div class="hdfc-strip">
-            <div class="hdfc-logo">HDFC<br/><span>BANK</span></div>
-            <div>🏦</div>
-            <div class="hdfc-text">
-              <strong>10% Instant Discount*</strong><br/>
-              on HDFC Bank Debit/Credit Cards &amp; EMI
-            </div>
-          </div>
-          <span class="tnc">*T&amp;C apply. Powered by Amazon Pay</span>
-        </div>
-
-        <!-- Right decorations -->
-        <div class="elephants-right">
-          <span class="elephant-right" style="font-size:90px;display:inline-block;">🐘</span>
-        </div>
-        <div class="lamp-right">🪔</div>
-        <div class="lamp-right2">🏮</div>
-        <div class="amzbox b3">📦</div>
-        <div class="amzbox b4">📦</div>
-      </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="live-badge"><div class="live-dot"></div>Limited Time Event</div>
+    <h1 class="hero-title">
+      <span class="t1">Mega Billion </span>
+      <span class="t2">Sale</span>
+      <span class="t3">Built For Scale</span>
+    </h1>
+    <p class="hero-tagline">Unmissable prices on <strong>millions of products</strong>. Up to <strong>80% off</strong> top brands — delivered fast.</p>
+    <div class="k8s-line">⚙️ Handles traffic spikes using Kubernetes Auto Scaling</div>
+    <div class="hero-ctas">
+      <button class="btn-primary" id="heroShopBtn">Start Shopping (Triggers Load) →</button>
+      <button class="btn-outline">Browse Categories</button>
     </div>
+    <div class="scaling-badge"><div class="scaling-dot"></div>🟢 Live Scaling Enabled</div>
+  </div>
+  <div class="countdown">
+    <span class="cd-lbl">⏱ Sale ends in</span>
+    <div class="cd-blk"><div class="cd-n" id="cd-h">03</div><div class="cd-u">Hours</div></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-blk"><div class="cd-n" id="cd-m">47</div><div class="cd-u">Mins</div></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-blk"><div class="cd-n" id="cd-s">22</div><div class="cd-u">Secs</div></div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
+</section>
 
-    <!-- Slide 2 – Electronics Sale -->
-    <div class="hero-slide">
-      <div class="slide-electronics">
-        <div class="elec-icons">💻📱🎧📺⌚</div>
-        <div>
-          <div class="elec-title">Electronics Sale<span>Up to 60% OFF</span></div>
-          <button class="dp-btn" style="margin-top:16px;max-width:200px;" onclick="scrollToDeals()">Shop Now →</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Slide 3 – Fashion Festival -->
-    <div class="hero-slide">
-      <div class="slide-fashion">
-        <div>
-          <div class="fash-title">Fashion Festival<span>Up to 80% OFF</span></div>
-          <button class="dp-btn" style="margin-top:16px;max-width:200px;background:#FFD740;border-color:#FFD740;" onclick="scrollToDeals()">Explore →</button>
-        </div>
-        <div style="font-size:80px;">👗👟👜</div>
-      </div>
-    </div>
-
-  </div><!-- end slider -->
-
-  <!-- Arrows -->
-  <button class="slider-arrow left" onclick="slide(-1)">‹</button>
-  <button class="slider-arrow right" onclick="slide(1)">›</button>
-
-  <!-- Dots -->
-  <div class="slide-dots">
-    <div class="sdot active" onclick="goSlide(0)"></div>
-    <div class="sdot" onclick="goSlide(1)"></div>
-    <div class="sdot" onclick="goSlide(2)"></div>
+<!-- CATEGORIES -->
+<div class="section">
+  <div class="sec-head"><h2 class="sec-title">Shop by <span>Category</span></h2><a class="view-all" href="#">View All →</a></div>
+  <div class="cat-grid">
+    <div class="cat-card" style="--cc:#00e5ff"><div class="cat-icon">📱</div><div class="cat-name">Mobiles</div><div class="cat-off">Up to 40% off</div></div>
+    <div class="cat-card" style="--cc:#7c4dff"><div class="cat-icon">💻</div><div class="cat-name">Laptops</div><div class="cat-off">Up to 35% off</div></div>
+    <div class="cat-card" style="--cc:#ff5722"><div class="cat-icon">📺</div><div class="cat-name">TVs</div><div class="cat-off">Up to 50% off</div></div>
+    <div class="cat-card" style="--cc:#ffc107"><div class="cat-icon">👟</div><div class="cat-name">Fashion</div><div class="cat-off">Min 60% off</div></div>
+    <div class="cat-card" style="--cc:#4caf50"><div class="cat-icon">🛋️</div><div class="cat-name">Home</div><div class="cat-off">Up to 55% off</div></div>
+    <div class="cat-card" style="--cc:#e91e63"><div class="cat-icon">🎧</div><div class="cat-name">Audio</div><div class="cat-off">Up to 70% off</div></div>
+    <div class="cat-card" style="--cc:#ff9800"><div class="cat-icon">🍳</div><div class="cat-name">Kitchen</div><div class="cat-off">Up to 45% off</div></div>
+    <div class="cat-card" style="--cc:#00bcd4"><div class="cat-icon">⌚</div><div class="cat-name">Wearables</div><div class="cat-off">Up to 65% off</div></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════ DEAL STRIP ═══ -->
-<div class="deal-strip">
-
-  <div class="deal-card" onclick="showToast('Opening Home Upgrade deals…')">
-    <h4>Upgrade your home |<br/>Up to 50% off</h4>
-    <div class="deal-items">
-      <div class="deal-item"><span class="di-emoji">🛋️</span><span class="di-label">Furniture</span></div>
-      <div class="deal-item"><span class="di-emoji">🍳</span><span class="di-label">Cookware</span></div>
-      <div class="deal-item"><span class="di-emoji">🛁</span><span class="di-label">Bath</span></div>
-      <div class="deal-item"><span class="di-emoji">💡</span><span class="di-label">Lighting</span></div>
+<!-- PRODUCTS -->
+<div class="section" style="padding-top:0">
+  <div class="sec-head"><h2 class="sec-title">🔥 <span>Top Deals</span></h2><a class="view-all" href="#">See More →</a></div>
+  <div class="prod-grid">
+    <div class="product-card" data-name="Samsung Galaxy S25 Ultra" data-brand="Samsung" data-price="72999" data-icon="📱">
+      <div class="prod-badge deal">46% OFF</div><div class="prod-img"><img src="https://images.unsplash.com/photo-1556656793-08538906a9f8?w=300&h=300&fit=crop" alt="Phone" style="width:100%;height:100%;object-fit:contain;"></div>
+      <div class="prod-info"><div class="prod-brand">Samsung</div><div class="prod-name">Galaxy S25 Ultra 5G</div><div><span class="prod-stars">★★★★★</span> <span class="prod-reviews">(4,218)</span></div><div class="prod-prices"><span class="prod-price">₹72,999</span><span class="prod-orig">₹1,34,999</span><span class="prod-disc">46% off</span></div></div>
+      <button class="prod-btn">Add to Cart</button>
     </div>
-    <span class="see-more">See all offers</span>
-  </div>
-
-  <div class="cashback-card" onclick="showToast('Opening Cashback offers…')">
-    <h4>Get up to ₹750 cashback</h4>
-    <p>with Amazon Pay UPI</p>
-    <div class="big-num">₹<span>750</span></div>
-    <div class="offer-row">
-      <div class="offer-tag">CASHBACK</div>
-      <span style="font-size:12px;color:#555;">Use code: GIFPAY</span>
+    <div class="product-card" data-name="MacBook Air M3" data-brand="Apple" data-price="99900" data-icon="💻">
+      <div class="prod-badge new">NEW</div><div class="prod-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop" alt="Laptop" style="width:100%;height:100%;object-fit:contain;"></div>
+      <div class="prod-info"><div class="prod-brand">Apple</div><div class="prod-name">MacBook Air M3 13"</div><div><span class="prod-stars">★★★★★</span> <span class="prod-reviews">(2,901)</span></div><div class="prod-prices"><span class="prod-price">₹99,900</span><span class="prod-orig">₹1,14,900</span><span class="prod-disc">13% off</span></div></div>
+      <button class="prod-btn">Add to Cart</button>
     </div>
-    <span class="see-more">Claim offer</span>
-  </div>
-
-  <div class="deal-card" onclick="showToast('Opening Women\'s Fashion…')">
-    <h4>Styles for Women | Up to 70% off</h4>
-    <div class="deal-items">
-      <div class="deal-item"><span class="di-emoji">👗</span><span class="di-label">Dresses</span></div>
-      <div class="deal-item"><span class="di-emoji">👠</span><span class="di-label">Heels</span></div>
-      <div class="deal-item"><span class="di-emoji">👜</span><span class="di-label">Bags</span></div>
-      <div class="deal-item"><span class="di-emoji">💍</span><span class="di-label">Jewellery</span></div>
+    <div class="product-card" data-name="Sony WH-1000XM5" data-brand="Sony" data-price="19990" data-icon="🎧">
+      <div class="prod-badge deal">DEAL</div><div class="prod-img"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop" alt="Headphones" style="width:100%;height:100%;object-fit:contain;"></div>
+      
+      <div class="prod-info"><div class="prod-brand">Sony</div><div class="prod-name">WH-1000XM5 Headphones</div><div><span class="prod-stars">★★★★★</span> <span class="prod-reviews">(8,540)</span></div><div class="prod-prices"><span class="prod-price">₹19,990</span><span class="prod-orig">₹34,990</span><span class="prod-disc">43% off</span></div></div>
+      <button class="prod-btn">Add to Cart</button>
     </div>
-    <span class="see-more">See all offers</span>
-  </div>
-
-  <div class="deal-card" onclick="openModal('signin-modal')">
-    <h4>Sign in for your<br/>best experience</h4>
-    <div style="text-align:center;margin:10px 0;">
-      <div style="font-size:48px;">👤</div>
-      <button class="dp-btn" style="margin-top:8px;" onclick="openModal('signin-modal')">Sign in securely</button>
-    </div>
-    <span class="see-more">New customer? Start here</span>
-  </div>
-
+    <div class="product-card" data-name="LG OLED 55 4K TV" data-brand="LG" data-price="124999" data-icon="📺">
+      <div class="prod-img">
+  <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300&h=300&fit=crop" alt="Smart TV" style="width: 100%; height: 100%; object-fit: contain;">
 </div>
-
-<!-- ═══════════════════════════ CONTENT GRID ═══ -->
-<div class="content-wrap">
-
-  <div class="content-card" onclick="showToast('Opening Mobiles deals…')">
-    <h3>Best deals on Mobiles</h3>
-    <div class="product-grid2">
-      <div class="prod-mini"><span class="pm-img">📱</span><span class="pm-price">From ₹6,999</span><br/><span class="pm-disc">Up to 40% off</span></div>
-      <div class="prod-mini"><span class="pm-img">📱</span><span class="pm-price">From ₹12,999</span><br/><span class="pm-disc">Up to 35% off</span></div>
-      <div class="prod-mini"><span class="pm-img">📱</span><span class="pm-price">From ₹24,999</span><br/><span class="pm-disc">Up to 30% off</span></div>
-      <div class="prod-mini"><span class="pm-img">📱</span><span class="pm-price">From ₹49,999</span><br/><span class="pm-disc">Up to 20% off</span></div>
+      <div class="prod-info"><div class="prod-brand">LG</div><div class="prod-name">55" OLED evo C4 4K Smart TV</div><div><span class="prod-stars">★★★★☆</span> <span class="prod-reviews">(1,232)</span></div><div class="prod-prices"><span class="prod-price">₹1,24,999</span><span class="prod-orig">₹1,89,990</span><span class="prod-disc">34% off</span></div></div>
+      <button class="prod-btn">Add to Cart</button>
     </div>
-    <span class="see-more">See all offers</span>
-  </div>
-
-  <div class="prime-card">
-    <div class="prime-logo-big">amazon <em>prime</em></div>
-    <p>Get exclusive early access to Great Indian Festival deals + free delivery</p>
-    <button class="prime-cta" onclick="showToast('Starting Prime trial…')">Try Prime Free →</button>
-    <ul class="prime-perks">
-      <li>30-min early sale access</li>
-      <li>FREE &amp; fast delivery</li>
-      <li>Prime Video &amp; Music</li>
-      <li>Exclusive member deals</li>
-    </ul>
-  </div>
-
-  <div class="content-card" onclick="showToast('Opening Electronics deals…')">
-    <h3>Top Electronics Deals</h3>
-    <div class="product-grid2">
-      <div class="prod-mini"><span class="pm-img">💻</span><span class="pm-price">Laptops</span><br/><span class="pm-disc">Up to 35% off</span></div>
-      <div class="prod-mini"><span class="pm-img">🎧</span><span class="pm-price">Audio</span><br/><span class="pm-disc">Up to 55% off</span></div>
-      <div class="prod-mini"><span class="pm-img">📺</span><span class="pm-price">TVs</span><br/><span class="pm-disc">Up to 45% off</span></div>
-      <div class="prod-mini"><span class="pm-img">📷</span><span class="pm-price">Cameras</span><br/><span class="pm-disc">Up to 40% off</span></div>
+    <div class="product-card" data-name="Apple Watch Series 10" data-brand="Apple" data-price="41900" data-icon="⌚">
+      <div class="prod-badge deal">FLASH</div><div class="prod-img"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop" alt="Watch" style="width:100%;height:100%;object-fit:contain;"></div>
+      <div class="prod-info"><div class="prod-brand">Apple</div><div class="prod-name">Watch Series 10 GPS 46mm</div><div><span class="prod-stars">★★★★★</span> <span class="prod-reviews">(3,120)</span></div><div class="prod-prices"><span class="prod-price">₹41,900</span><span class="prod-orig">₹51,900</span><span class="prod-disc">19% off</span></div></div>
+      <button class="prod-btn">Add to Cart</button>
     </div>
-    <span class="see-more">See all offers</span>
-  </div>
-
-  <div class="content-card" onclick="showToast('Opening Appliances deals…')">
-    <h3>Top Appliance Deals</h3>
-    <div class="product-grid2">
-      <div class="prod-mini"><span class="pm-img">🧊</span><span class="pm-price">Refrigerators</span><br/><span class="pm-disc">Up to 30% off</span></div>
-      <div class="prod-mini"><span class="pm-img">🫙</span><span class="pm-price">Washing</span><br/><span class="pm-disc">Up to 35% off</span></div>
-      <div class="prod-mini"><span class="pm-img">❄️</span><span class="pm-price">Air Cond.</span><br/><span class="pm-disc">Up to 25% off</span></div>
-      <div class="prod-mini"><span class="pm-img">🫧</span><span class="pm-price">Dishwasher</span><br/><span class="pm-disc">Up to 20% off</span></div>
+   
+    <div class="product-card" data-name="Canon EOS R50" data-brand="Canon" data-price="58999" data-icon="📷">
+      <div class="prod-badge deal">HOT</div><div class="prod-img"><img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=300&h=300&fit=crop" alt="Camera" style="width:100%;height:100%;object-fit:contain;"></div>
+      <div class="prod-info"><div class="prod-brand">Canon</div><div class="prod-name">EOS R50 Mirrorless Camera</div><div><span class="prod-stars">★★★★☆</span> <span class="prod-reviews">(980)</span></div><div class="prod-prices"><span class="prod-price">₹58,999</span><span class="prod-orig">₹79,995</span><span class="prod-disc">26% off</span></div></div>
+      <button class="prod-btn">Add to Cart</button>
     </div>
-    <span class="see-more">See all offers</span>
-  </div>
-
-</div>
-
-<!-- ═══════════════════════════ TODAY'S DEALS ═══ -->
-<div class="today-deals" id="deals-section">
-  <div class="section-header">
-    <h2>⚡ Today's Deals</h2>
-    <a onclick="showToast('Loading all deals…')">See all deals</a>
-  </div>
-  <div class="deals-grid">
-
-    <div class="deal-product">
-      <span class="dp-img">📱</span>
-      <span class="dp-badge">48% OFF</span>
-      <div class="dp-name">Samsung Galaxy A54 5G – 8GB RAM</div>
-      <div class="dp-price-row">
-        <span class="dp-price">₹26,999</span>
-        <span class="dp-mrp">₹49,999</span>
-      </div>
-      <div class="dp-save">Save ₹23,000</div>
-      <div class="dp-rating">★★★★☆ <span>(3,204)</span></div>
-      <button class="dp-btn" onclick="addToCart('Samsung Galaxy A54 5G','₹26,999','📱')">Add to Cart</button>
     </div>
-
-    <div class="deal-product">
-      <span class="dp-img">💻</span>
-      <span class="dp-badge">35% OFF</span>
-      <div class="dp-name">Lenovo IdeaPad 5 – Intel i5, 16GB, 512GB SSD</div>
-      <div class="dp-price-row">
-        <span class="dp-price">₹47,990</span>
-        <span class="dp-mrp">₹73,990</span>
-      </div>
-      <div class="dp-save">Save ₹26,000</div>
-      <div class="dp-rating">★★★★★ <span>(1,892)</span></div>
-      <button class="dp-btn" onclick="addToCart('Lenovo IdeaPad 5','₹47,990','💻')">Add to Cart</button>
-    </div>
-
-    <div class="deal-product">
-      <span class="dp-img">🎧</span>
-      <span class="dp-badge">52% OFF</span>
-      <div class="dp-name">boAt Rockerz 450 Wireless Headphones</div>
-      <div class="dp-price-row">
-        <span class="dp-price">₹1,299</span>
-        <span class="dp-mrp">₹2,690</span>
-      </div>
-      <div class="dp-save">Save ₹1,391</div>
-      <div class="dp-rating">★★★★☆ <span>(12,450)</span></div>
-      <button class="dp-btn" onclick="addToCart('boAt Rockerz 450','₹1,299','🎧')">Add to Cart</button>
-    </div>
-
-    <div class="deal-product">
-      <span class="dp-img">📺</span>
-      <span class="dp-badge">44% OFF</span>
-      <div class="dp-name">Mi 43" 4K Smart TV – Android TV, Dolby Audio</div>
-      <div class="dp-price-row">
-        <span class="dp-price">₹29,999</span>
-        <span class="dp-mrp">₹53,999</span>
-      </div>
-      <div class="dp-save">Save ₹24,000</div>
-      <div class="dp-rating">★★★★★ <span>(5,671)</span></div>
-      <button class="dp-btn" onclick="addToCart('Mi 43\" 4K Smart TV','₹29,999','📺')">Add to Cart</button>
-    </div>
-
-    <div class="deal-product">
-      <span class="dp-img">⌚</span>
-      <span class="dp-badge">62% OFF</span>
-      <div class="dp-name">Amazfit GTS 4 Mini Smart Watch – GPS, AMOLED</div>
-      <div class="dp-price-row">
-        <span class="dp-price">₹4,999</span>
-        <span class="dp-mrp">₹12,999</span>
-      </div>
-      <div class="dp-save">Save ₹8,000</div>
-      <div class="dp-rating">★★★★☆ <span>(2,301)</span></div>
-      <button class="dp-btn" onclick="addToCart('Amazfit GTS 4 Mini','₹4,999','⌚')">Add to Cart</button>
-    </div>
-
   </div>
 </div>
 
-<!-- ═══════════════════════════ BOTTOM CATEGORIES ═══ -->
-<div class="bottom-cats">
-  <div class="bot-card" onclick="showToast('Opening Books & Education…')">
-    <h4>Books &amp; Education</h4>
-    <div class="bot-items">
-      <div class="bot-item">📚<p>Fiction</p></div>
-      <div class="bot-item">📖<p>Non-Fiction</p></div>
-      <div class="bot-item">🎓<p>Academic</p></div>
-      <div class="bot-item">📔<p>Children's</p></div>
-    </div>
-    <span class="see-more">Explore all books</span>
-  </div>
-
-  <div class="bot-card" onclick="showToast('Opening Sports & Fitness…')">
-    <h4>Sports &amp; Fitness</h4>
-    <div class="bot-items">
-      <div class="bot-item">🏋️<p>Gym</p></div>
-      <div class="bot-item">🏏<p>Cricket</p></div>
-      <div class="bot-item">🏸<p>Badminton</p></div>
-      <div class="bot-item">🚴<p>Cycling</p></div>
-    </div>
-    <span class="see-more">See all sports</span>
-  </div>
-
-  <div class="bot-card" onclick="showToast('Opening Toys & Games…')">
-    <h4>Toys, Games &amp; More</h4>
-    <div class="bot-items">
-      <div class="bot-item">🎮<p>Gaming</p></div>
-      <div class="bot-item">🧸<p>Soft Toys</p></div>
-      <div class="bot-item">🎲<p>Board Games</p></div>
-      <div class="bot-item">🚂<p>Model Toys</p></div>
-    </div>
-    <span class="see-more">See all toys</span>
-  </div>
-
-  <div class="bot-card" onclick="showToast('Opening Beauty & Personal Care…')">
-    <h4>Beauty &amp; Personal Care</h4>
-    <div class="bot-items">
-      <div class="bot-item">💄<p>Makeup</p></div>
-      <div class="bot-item">🧴<p>Skincare</p></div>
-      <div class="bot-item">🧖<p>Hair Care</p></div>
-      <div class="bot-item">🌿<p>Organic</p></div>
-    </div>
-    <span class="see-more">See all beauty</span>
-  </div>
+<!-- BANNERS -->
+<div class="banners">
+  <div class="banner b1"><div class="b-deco"><img src="https://images.unsplash.com/photo-1559163022-98530343b5e6?w=150&h=150&fit=crop" alt="gaming" style="width:80px;height:80px;object-fit:contain;opacity:0.3;"></div><div class="b-text"><span class="b-eye">Gaming Week</span><div class="b-title">Level Up Your Setup</div><div class="b-sub">Consoles, accessories & more</div><button class="b-cta">Shop Gaming →</button></div></div>
+  <div class="banner b2"><div class="b-deco"><img src="https://images.unsplash.com/photo-1595777707802-3b97c0648eb5?w=150&h=150&fit=crop" alt="fashion" style="width:80px;height:80px;object-fit:contain;opacity:0.3;"></div><div class="b-text"><span class="b-eye">Fashion Fiesta</span><div class="b-title">Min 70% Off Brands</div><div class="b-sub">Top fashion labels on sale</div><button class="b-cta">Shop Fashion →</button></div></div>
 </div>
 
-<!-- ═══════════════════════════ FOOTER ═══ -->
-<div class="back-to-top" onclick="scrollTo({top:0,behavior:'smooth'})">Back to top</div>
+<!-- FEATURES -->
+<div class="features">
+</div>
 
+<!-- FOOTER -->
 <footer>
-  <div class="footer-col">
-    <h4>Get to Know Us</h4>
-    <ul>
-      <li><a onclick="showToast('Opening About Amazon…')">About Amazon</a></li>
-      <li><a onclick="showToast('Opening Careers…')">Careers</a></li>
-      <li><a onclick="showToast('Opening Press Releases…')">Press Releases</a></li>
-      <li><a onclick="showToast('Opening Amazon Science…')">Amazon Science</a></li>
-    </ul>
+  <div class="footer-grid">
+    <div><div class="f-logo">K8sKart</div><p class="f-desc">India's smartest marketplace — powered by Kubernetes, built for scale. Shop smarter, every day.</p></div>
+    <div class="footer-col"><h4>Help</h4><ul><li><a href="#">Payments</a></li><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li><li><a href="#">FAQ</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Blog</a></li></ul></div>
+    <div class="footer-col"><h4>Sell</h4><ul><li><a href="#">Become a Seller</a></li><li><a href="#">Advertise</a></li><li><a href="#">K8sKart Business</a></li></ul></div>
   </div>
-  <div class="footer-col">
-    <h4>Connect with Us</h4>
-    <ul>
-      <li><a onclick="showToast('Opening Facebook…')">Facebook</a></li>
-      <li><a onclick="showToast('Opening Twitter…')">Twitter</a></li>
-      <li><a onclick="showToast('Opening Instagram…')">Instagram</a></li>
-      <li><a onclick="showToast('Opening YouTube…')">YouTube</a></li>
-    </ul>
-  </div>
-  <div class="footer-col">
-    <h4>Make Money with Us</h4>
-    <ul>
-      <li><a onclick="showToast('Opening Sell on Amazon…')">Sell on Amazon</a></li>
-      <li><a onclick="showToast('Opening Amazon Associates…')">Amazon Associates</a></li>
-      <li><a onclick="showToast('Opening Advertise…')">Advertise Your Products</a></li>
-      <li><a onclick="showToast('Opening Self-Publish…')">Self-Publish with Us</a></li>
-    </ul>
-  </div>
-  <div class="footer-col">
-    <h4>Let Us Help You</h4>
-    <ul>
-      <li><a onclick="showToast('Opening COVID policy…')">COVID-19 and Amazon</a></li>
-      <li><a onclick="showToast('Opening Your Account…')">Your Account</a></li>
-      <li><a onclick="showToast('Opening Returns…')">Returns Centre</a></li>
-      <li><a onclick="showToast('Opening Help…')">Help</a></li>
-    </ul>
+  <div class="footer-bot">
+    <span>© 2026 K8sKart Private Limited. All rights reserved.</span>
+    <span>Hyderabad · ⚙️ Powered by Kubernetes</span>
   </div>
 </footer>
 
-<div class="footer-bottom">
-  <div class="foot-logo">amazon<span>.in</span></div>
-  <p>© 1996–2026 Amazon.com, Inc. or its affiliates. All rights reserved.</p>
-  <p style="margin-top:6px;">Conditions of Use &nbsp;|&nbsp; Privacy Notice &nbsp;|&nbsp; Interest-Based Ads</p>
-</div>
-
-<!-- ═══════════════════════════ SIGN-IN MODAL ═══ -->
-<div class="modal-overlay" id="signin-modal" onclick="closeModalOutside(event,'signin-modal')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('signin-modal')">×</button>
-    <h2>Sign in</h2>
-    <label>Email or mobile phone number</label>
-    <input type="text" id="signinEmail" placeholder="Email or phone number"/>
-    <label>Password</label>
-    <input type="password" id="signinPass" placeholder="Password"/>
-    <button class="btn-amz" onclick="doSignin()">Sign in</button>
-    <div class="divider">New to Amazon?</div>
-    <div class="new-acct"><a onclick="showToast('Create account coming soon!')">Create your Amazon account</a></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════ CART MODAL ═══ -->
-<div class="modal-overlay" id="cart-modal" onclick="closeModalOutside(event,'cart-modal')">
-  <div class="modal-box" style="width:440px;">
-    <button class="modal-close" onclick="closeModal('cart-modal')">×</button>
-    <h2>🛒 Your Cart</h2>
-    <div id="cart-items-list"></div>
-    <div id="cart-empty" style="text-align:center;padding:20px;color:#555;font-size:14px;">Your cart is empty.<br/>Browse deals and add items!</div>
-    <div id="cart-total-row" class="cart-total-row" style="display:none;">
-      <span>Subtotal</span><span id="cart-total">₹0</span>
-    </div>
-    <button class="btn-amz" style="margin-top:14px;" onclick="doCheckout()">Proceed to checkout</button>
-  </div>
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
-<!-- ═══════════════════════════ JAVASCRIPT ═══ -->
 <script>
-/* ── Slider ── */
-let currentSlide=0;const totalSlides=3;
-function slide(dir){goSlide((currentSlide+dir+totalSlides)%totalSlides);}
-function goSlide(n){
-  currentSlide=n;
-  document.getElementById('heroSlider').style.transform=`translateX(-${n*100}%)`;
-  document.querySelectorAll('.sdot').forEach((d,i)=>d.classList.toggle('active',i===n));
-}
-// Auto-advance
-let autoSlide=setInterval(()=>slide(1),4000);
-document.querySelector('.hero-wrapper').addEventListener('mouseenter',()=>clearInterval(autoSlide));
-document.querySelector('.hero-wrapper').addEventListener('mouseleave',()=>{autoSlide=setInterval(()=>slide(1),4000);});
+/* PRODUCT IMAGE MAPPING */
+const productImages = {
+  'Samsung Galaxy S25 Ultra': 'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=300&h=300&fit=crop',
+  'MacBook Air M3': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop',
+  'Sony WH-1000XM5': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
+  'LG OLED 55 4K TV': 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300&h=300&fit=crop',
+  'Apple Watch Series 10': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop',
+  'PlayStation 5 Slim': 'https://images.unsplash.com/photo-1605559424843-9e4c3dec3806?w=300&h=300&fit=crop',
+  'Canon EOS R50': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=300&h=300&fit=crop',
+  'HP LaserJet Pro MFP': 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=300&h=300&fit=crop'
+};
 
-/* ── Search ── */
-function doSearch(){
-  const q=document.getElementById('searchInput').value.trim();
-  if(q) showToast(`Searching for "${q}"…`);
-  else  showToast('Please enter a search term.');
-}
-document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+/* COUNTDOWN */
+(function(){
+  let t=3*3600+47*60+22;
+  const H=document.getElementById('cd-h'),M=document.getElementById('cd-m'),S=document.getElementById('cd-s');
+  setInterval(()=>{if(t<=0){t=6*3600;return;}t--;H.textContent=String(Math.floor(t/3600)).padStart(2,'0');M.textContent=String(Math.floor((t%3600)/60)).padStart(2,'0');S.textContent=String(t%60).padStart(2,'0');},1000);
+})();
 
-/* ── Scroll to deals ── */
-function scrollToDeals(){document.getElementById('deals-section').scrollIntoView({behavior:'smooth'});}
+/* CART */
+const cart=[];
+const cartToggle=document.getElementById('cartToggle');
+const cartDrawer=document.getElementById('cartDrawer');
+const cartOverlay=document.getElementById('cartOverlay');
+const cartClose=document.getElementById('cartClose');
+const cartItemsEl=document.getElementById('cartItems');
+const cartEmptyEl=document.getElementById('cartEmpty');
+const cartFooterEl=document.getElementById('cartFooter');
+const cartCountEl=document.getElementById('cartCount');
+const cartTotalEl=document.getElementById('cartTotal');
 
-/* ── Cart ── */
-let cart=[];
-function addToCart(name,price,img){
-  const existing=cart.find(i=>i.name===name);
-  if(existing){existing.qty++;} else{cart.push({name,price,img,qty:1});}
-  updateCartCount();
-  const btn=event.target;
-  btn.textContent='✓ Added!';btn.style.background='#3dbb61';btn.style.color='#fff';
-  setTimeout(()=>{btn.textContent='Add to Cart';btn.style.background='';btn.style.color='';},1800);
-  showToast(`${img} "${name}" added to cart`);
-}
-function updateCartCount(){
-  const total=cart.reduce((s,i)=>s+i.qty,0);
-  document.getElementById('cartCount').textContent=total;
-}
+function openCart(){cartDrawer.classList.add('open');cartOverlay.classList.add('open');document.body.style.overflow='hidden';}
+function closeCart(){cartDrawer.classList.remove('open');cartOverlay.classList.remove('open');document.body.style.overflow='';}
+cartToggle.addEventListener('click',openCart);
+cartClose.addEventListener('click',closeCart);
+cartOverlay.addEventListener('click',closeCart);
+
+function fmt(n){return '₹'+n.toLocaleString('en-IN');}
+
 function renderCart(){
-  const list=document.getElementById('cart-items-list');
-  const empty=document.getElementById('cart-empty');
-  const totalRow=document.getElementById('cart-total-row');
-  if(cart.length===0){list.innerHTML='';empty.style.display='block';totalRow.style.display='none';return;}
-  empty.style.display='none';totalRow.style.display='flex';
-  let total=0;
-  list.innerHTML=cart.map((item,idx)=>{
-    const num=parseInt(item.price.replace(/[^0-9]/g,''));
-    total+=num*item.qty;
-    return `<div class="cart-item-row">
-      <span class="ci-img">${item.img}</span>
-      <div class="ci-info">
-        <strong>${item.name}</strong>
-        <span>${item.price} × ${item.qty}</span><br/>
-        <button class="ci-remove" onclick="removeFromCart(${idx})">Remove</button>
-      </div>
-      <span class="ci-price">${item.price}</span>
-    </div>`;
-  }).join('');
-  document.getElementById('cart-total').textContent='₹'+total.toLocaleString('en-IN');
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  cartCountEl.textContent=count;
+  [...cartItemsEl.children].forEach(c=>{if(c.id!=='cartEmpty')c.remove();});
+  if(cart.length===0){
+    cartEmptyEl.style.display='flex';cartFooterEl.style.display='none';
+  } else {
+    cartEmptyEl.style.display='none';cartFooterEl.style.display='flex';
+    cartTotalEl.textContent=fmt(total);
+    cart.forEach((item,idx)=>{
+      const el=document.createElement('div');
+      el.className='cart-item';
+      el.innerHTML=`<div class="ci-icon">${item.icon}</div><div class="ci-info"><div class="ci-brand">${item.brand}</div><div class="ci-name">${item.name}</div><div class="ci-qty"><button class="qty-btn" data-i="${idx}" data-d="-1">−</button><span class="qty-n">${item.qty}</span><button class="qty-btn" data-i="${idx}" data-d="1">+</button></div><div class="ci-price">${fmt(item.price*item.qty)}</div></div><button class="ci-remove" data-i="${idx}">✕</button>`;
+      cartItemsEl.appendChild(el);
+    });
+    cartItemsEl.querySelectorAll('.qty-btn').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.i,d=+b.dataset.d;cart[i].qty=Math.max(1,cart[i].qty+d);renderCart();}));
+    cartItemsEl.querySelectorAll('.ci-remove').forEach(b=>b.addEventListener('click',()=>{cart.splice(+b.dataset.i,1);renderCart();}));
+  }
 }
-function removeFromCart(idx){cart.splice(idx,1);updateCartCount();renderCart();}
+renderCart();
 
-function doCheckout(){
-  if(cart.length===0){showToast('Your cart is empty!');return;}
-  closeModal('cart-modal');
-  openModal('signin-modal');
-  showToast('Please sign in to complete checkout.');
-}
+document.querySelectorAll('.prod-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const c=this.closest('.product-card');
+    const ex=cart.find(i=>i.name===c.dataset.name);
+    if(ex)ex.qty++;else cart.push({name:c.dataset.name,brand:c.dataset.brand,icon:c.dataset.icon,price:+c.dataset.price,qty:1});
+    renderCart();
+    cartCountEl.style.transform='scale(1.5)';setTimeout(()=>{cartCountEl.style.transform='';},250);
+    const o=this.textContent;this.textContent='✓ Added!';this.style.background='#4caf50';this.style.borderColor='#4caf50';
+    setTimeout(()=>{this.textContent=o;this.style.background='';this.style.borderColor='';},1400);
+  });
+});
 
-/* ── Sign in ── */
-function doSignin(){
-  const email=document.getElementById('signinEmail').value.trim();
-  const pass=document.getElementById('signinPass').value.trim();
-  if(!email){showToast('Please enter your email or phone.');return;}
-  if(!pass){showToast('Please enter your password.');return;}
-  closeModal('signin-modal');
-  showToast(`Welcome back! Signed in as ${email}`);
-}
+document.getElementById('heroShopBtn').addEventListener('click',()=>{document.querySelector('.prod-grid').scrollIntoView({behavior:'smooth'});});
 
-/* ── Modals ── */
-function openModal(id){
-  if(id==='cart-modal')renderCart();
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow='hidden';
+/* CURSOR — orange only    uu */
+const dot=document.getElementById('c-dot'),ring=document.getElementById('c-ring'),lbl=document.getElementById('c-lbl');
+const cvs=document.getElementById('c-trail'),ctx=cvs.getContext('2d');
+let mx=-200,my=-200,rx=-200,ry=-200;
+function rsz(){cvs.width=innerWidth;cvs.height=innerHeight;}rsz();addEventListener('resize',rsz);
+const pts=[];let lastPt=0;
+class Pt{
+  constructor(x,y){this.x=x;this.y=y;this.life=1;this.decay=.048+Math.random()*.028;this.r=2.5+Math.random()*4;this.vx=(Math.random()-.5)*.9;this.vy=(Math.random()-.5)*.9;this.warm=Math.random()>.5;}
+  tick(){this.x+=this.vx;this.y+=this.vy;this.vy+=.035;this.life-=this.decay;this.r*=.975;}
+  draw(){const c=this.warm?'255,87,34':'255,130,70';ctx.beginPath();ctx.arc(this.x,this.y,Math.max(this.r,0),0,Math.PI*2);ctx.fillStyle=`rgba(${c},${Math.max(this.life,0)})`;ctx.fill();}
+  get alive(){return this.life>0&&this.r>.2;}
 }
-function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
-function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
-
-/* ── Toast ── */
-let toastTimer;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
-}
+function spawnPts(x,y){const n=performance.now();if(n-lastPt<28)return;lastPt=n;for(let i=0;i<2;i++)pts.push(new Pt(x,y));if(pts.length>100)pts.splice(0,pts.length-100);}
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;dot.style.left=mx+'px';dot.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';lbl.style.left=mx+'px';lbl.style.top=my+'px';ctx.clearRect(0,0,cvs.width,cvs.height);for(let i=pts.length-1;i>=0;i--){pts[i].tick();if(pts[i].alive)pts[i].draw();else pts.splice(i,1);}requestAnimationFrame(loop);})();
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;spawnPts(mx,my);});
+const hm=new Map([['btn-primary','Shop'],['btn-outline','Browse'],['btn-cart','Cart'],['prod-btn','Add'],['cat-card','Explore'],['product-card','View'],['banner','Shop'],['cart-close','Close']]);
+document.querySelectorAll('a,button,input,.cat-card,.product-card,.banner').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{document.body.classList.add('c-hover');for(const[cls,txt]of hm){if(el.classList.contains(cls)){lbl.textContent=txt;lbl.style.opacity='1';break;}}});
+  el.addEventListener('mouseleave',()=>{document.body.classList.remove('c-hover');lbl.style.opacity='0';});
+});
+document.addEventListener('mousedown',()=>{document.body.classList.add('c-click');for(let i=0;i<10;i++)pts.push(new Pt(mx,my));});
+document.addEventListener('mouseup',()=>document.body.classList.remove('c-click'));
+document.addEventListener('mouseleave',()=>{dot.style.opacity='0';ring.style.opacity='0';});
+document.addEventListener('mouseenter',()=>{dot.style.opacity='1';ring.style.opacity='1';});
+/* SCROLL FADE-IN */
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';io.unobserve(x.target);}});},{threshold:.1});
+document.querySelectorAll('.product-card,.cat-card').forEach(c=>{c.style.opacity='0';c.style.transition='opacity .45s ease,transform .45s ease';c.style.transform='translateY(18px)';io.observe(c);});
+/* THEME TOGGLE */
+const themeToggle=document.getElementById('themeToggle');
+const htmlEl=document.documentElement;
+const savedTheme=localStorage.getItem('theme')||'dark';
+if(savedTheme==='light')htmlEl.classList.add('light-mode');
+themeToggle.addEventListener('click',()=>{
+  htmlEl.classList.toggle('light-mode');
+  const isLight=htmlEl.classList.contains('light-mode');
+  localStorage.setItem('theme',isLight?'light':'dark');
+  themeToggle.textContent=isLight?'☀️':'🌙';
+});
+themeToggle.textContent=savedTheme==='light'?'☀️':'🌙';
 </script>
 </body>
 </html>
