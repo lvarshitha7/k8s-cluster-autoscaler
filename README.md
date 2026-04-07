@@ -195,6 +195,83 @@ Express API Pods (auto-scaled by HPA)
 AWS EKS Worker Nodes (EC2)
 ```
 
+##🚀 CI/CD Pipeline Architecture
+
+```mermaid
+flowchart TD
+    %% Define Colors and Styles
+    classDef repo fill:#f5f6fa,stroke:#7f8fa6,stroke-width:2px,color:#2f3640;
+    classDef jenkins fill:#fbeeb8,stroke:#f1c40f,stroke-width:2px,color:#2c3e50;
+    classDef docker fill:#c7ecee,stroke:#22a6b3,stroke-width:2px,color:#2c3e50;
+    classDef k8s fill:#c8d6e5,stroke:#54a0ff,stroke-width:2px,color:#2c3e50;
+    classDef test fill:#dff9fb,stroke:#badc58,stroke-width:2px,color:#2c3e50;
+    classDef cleanup fill:#dcdde1,stroke:#718093,stroke-width:2px,color:#2c3e50;
+    classDef success fill:#b8e994,stroke:#78e08f,stroke-width:2px,color:#2c3e50;
+    classDef fail fill:#fc5c65,stroke:#eb3b5a,stroke-width:2px,color:#fff;
+    classDef decision fill:#fad390,stroke:#e58e26,stroke-width:2px,color:#2c3e50;
+
+    subgraph Source Control
+        Git[("🐙 GitHub Repository\n(main branch)")]:::repo
+    end
+
+    subgraph Jenkins CI/CD Pipeline
+        Clone["📥 Clone Code"]:::jenkins
+        
+        subgraph Build & Package
+            Build["🛠️ Build Docker Image\n(Node.js Express API)"]:::docker
+            Push["☁️ Push to Docker Hub\n(lvarshitha7 registry)"]:::docker
+        end
+
+        subgraph Local Docker Sandbox
+            StopLocal["🛑 Stop Old Container"]:::docker
+            RunLocal["▶️ Run New Container\n(Port 3000)"]:::docker
+        end
+
+        subgraph Kubernetes Deployment & Config
+            DeployK8s["☸️ Deploy to Kubernetes\n(Deployment, Service, HPA)"]:::k8s
+            CheckCA{"cluster-autoscaler.yaml\nexists?"}:::decision
+            DeployCA["📈 Deploy Cluster Autoscaler\n(kube-system)"]:::k8s
+            VerifyDeploy["🔍 Verify Deployment\n(Pods, HPA, Nodes)"]:::test
+        end
+
+        subgraph Load Testing & Scaling Validation
+            CheckK6{"k6/load-test.js\nexists?"}:::decision
+            RunK6["🔥 Run k6 Load Test\n(50 VUs for 2 mins)"]:::test
+            VerifyScale["📊 Verify Autoscaling\n(Check Pod/Node scaling)"]:::test
+        end
+
+        Cleanup["🧹 Cleanup Docker Images"]:::cleanup
+    end
+
+    subgraph Post Build Actions
+        Result{"Pipeline Status"}:::decision
+        Success["✅ Print Success"]:::success
+        Failure["❌ Print Failure"]:::fail
+        Always["📝 Print Review Commands"]:::cleanup
+    end
+
+    %% Routing
+    Git --> Clone
+    Clone --> Build
+    Build --> Push
+    Push --> StopLocal
+    StopLocal --> RunLocal
+    RunLocal --> DeployK8s
+    
+    DeployK8s --> CheckCA
+    CheckCA -- Yes --> DeployCA --> VerifyDeploy
+    CheckCA -- No --> VerifyDeploy
+    
+    VerifyDeploy --> CheckK6
+    CheckK6 -- Yes --> RunK6 --> VerifyScale
+    CheckK6 -- No --> VerifyScale
+    
+    VerifyScale --> Cleanup
+    Cleanup --> Result
+    Result -- Success --> Success --> Always
+    Result -- Failure --> Failure --> Always
+```
+
 ---
 
 ## 🧪 Testing Autoscaling — Step by Step
